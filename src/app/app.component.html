@@ -1,20 +1,136 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
 
+
+<div class="row">
+    <div class="col col-xl-12 col-lg-12">
+      <div class ="card mb-12">
+        <div class ="card-body table-responsive">
+         <div class= "text-right" style="padding-top:10px;float:left;">
+          <button style="background: green; padding-left:50%;" (click)="addPlant(content)" class="btn btn-primary" >
+            Add Plant
+          </button>
+        </div>
+    
+    
+        <div class="card col-8" style="background:whitesmoke; border:none;">
+          <div class="row">
+            <div class="col-md-6">
+    
+                <div style="width:50%;">
+                <h5 style="padding-left:80%;color:black;"> Plant List</h5>
+              
+                </div>
+              </div>
+            </div>
+          </div>
+          
+    
+          <br/><br/>
+          <table id="plantTable" data-page-length="15" class="table table-stripped table-bordered dataTable" style="height:35px;" >
+            <thead style="background: #90ee90; height:5px;">
+            <tr>
+              <th style="color:red; background: white; font-weight:normal;">#</th>
+              <th style="color:white; font-weight:normal;">Common Name</th>
+              <th style="color:white; font-weight:normal;">Plant Type</th>
+              <th style="color:white; font-weight:normal;">Bloom Time</th>
+              <th style="color:white; font-weight:normal;">Flower Colour</th>
+              <th style="color:white; font-weight:normal;">Soil Type</th>
+              <th style="color:white; font-weight:normal;">Habitat Value</th>
+            </tr>
+            </thead>
+    
+            <tbody>
+    
+              <tr *ngFor="let plant of plantList; let i=index"
+              style="cursor:pointer;background: white"
+              onmouseover="this.style.background='#f3eced'"
+              onmouseout="this.style.background='white'">
+    
+              <th scope="row">{{i+1}}</th>
+              <td>{{plant.common_name}}</td>
+              <td>{{plant.plant_type}}</td>
+              <td>{{plant.bloom_time}}</td>
+              <td>{{plant.flower_color}}</td>
+              <td>{{plant.soil_type}}</td>
+              <td>{{plant.habitat_int}}</td>
+              <td>
+                <i class="fa fa-trash-o"></i>
+              </td>
+    
+            </tbody>
+            
+          </table>
+    
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <ng-template #content  let-c="close" let-d="dismiss">
+      <div class="modal-header" style="background:#dc3545;color:white;">
+        <h4 class="modal-title"> Add New Plant</h4>
+        <button type="button" class="close" aria-label="Close" (Click) ="c('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    
+      <div class="modal-body">
+      <form [formGroup]="plantListForm">
+        <div class="form-group">
+          <label for="common_name" class="col-form-label">Common Name:</label>
+          <input type="text" class="form-control" formControlName="common_name" [ngClass]="{'is-invalid':submitted && f.common_name.errors}" #common_name>
+          <div *ngIf="submitted && f.common_name.errors" class="invalid-feedback">
+            <div style="background:#dc3545;" *ngIf="f.common_name.errors.required">Common Name Cannot Be Empty</div>
+            <div *ngIf="f.common_name.errors.maxlength">Common Name requires max 25 characters</div>
+           </div>
+        </div>
+        
+    
+        <div class="form-group">
+            <label for="plant_type" class="col-form-label">Plant Type:</label>
+            <select formControlName="plant_type" class="form-control" #plant_type>
+              <option *ngFor="let plant_type of plant_type_dummy_input">{{plant_type}}</option>
+            </select>
+          </div>
+    
+          <div class="form-group">
+              <label for="bloom_time" class="col-form-label">Bloom Time:</label>
+              <select formControlName="bloom_time" class="form-control" #bloom_time>
+                  <option *ngFor="let bloom_time of bloom_type_dummy_data">{{bloom_time}}</option>
+                </select>
+            </div>
+    
+            <div class="form-group">
+                <label for="flower_color" class="col-form-label">Flower Color:</label>
+                <input type="text" class="form-control" formControlName="flower_color" [ngClass]="{'is-invalid':submitted && f.flower_color.errors}" #flower_color>
+                <div *ngIf="submitted && f.flower_color.errors" class="invalid-feedback">
+                  <div style="background:#dc3545;" *ngIf="f.flower_color.errors.required">Flower Color Cannot Be Empty</div>
+                  <div style="background:#dc3545;" *ngIf="f.flower_color.errors.minlength">Flower Color requires min 3 characters</div>
+                  <div style="background:#dc3545;" *ngIf="f.flower_color.errors.maxlength">Flower Color requires max 15 characters</div>
+                 </div>
+              </div>
+    
+              <div class="form-group">
+                <label for="soil_type" class="col-form-label">Soil Type:</label>
+                <input type="text" class="form-control" formControlName="soil_type"  #soil_type>
+
+              </div>
+    
+              <div class="form-group">
+                  <label for="habitat_int" class="col-form-label">Habitat Value:</label>
+                  <input type="text" class="form-control" formControlName="habitat_int"  #habitat_int>
+                
+              </div>
+      
+    
+      <div class="modal-footer">
+        <button type="button" class="btn-btn-secondary" (click)="c('Close click')">Close</button>
+        <button type="button" class="btn-btn-tertiary" (click)="clearForm()">Clear</button>
+        <button type="button" class="btn-btn-outline-success my-0 my-sm-0" (click)="createPlant(common_name.value,plant_type.value, bloom_time.value, flower_color.value, soil_type.value, habitat_int.value)">Create Plant</button>
+      </div>
+  
+
+      </form>
+      
+    </div>
+    
+    </ng-template>
